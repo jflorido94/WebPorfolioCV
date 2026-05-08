@@ -19,9 +19,7 @@
                         {{ $user->name }}<br>
                         <span class="gradient-text">{{ $user->profile?->title ?? 'Desarrollador Web' }}</span>
                     </h1>
-                    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8 max-w-lg">
-                        {!! nl2br(e($user->profile?->bio ?? 'Desarrollador apasionado por construir soluciones robustas y escalables.')) !!}
-                    </p>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8 max-w-lg" style="white-space: pre-line">{{ $user->profile?->bio ?? 'Desarrollador apasionado por construir soluciones robustas y escalables.' }}</p>
                     <div class="flex flex-wrap gap-4">
                         <a href="{{ route('blog.index') }}" class="btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

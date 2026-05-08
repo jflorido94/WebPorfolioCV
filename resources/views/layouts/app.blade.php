@@ -96,9 +96,9 @@
                 {{-- Brand --}}
                 <div>
                     <span class="font-heading text-2xl font-black gradient-text">{{ $siteInitials }}</span>
-                    <p class="mt-3 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                        Desarrollador Web Fullstack especializado en PHP/Laravel.<br>Construyendo software robusto y escalable.
-                    </p>
+                    @if($siteBio)
+                    <p class="mt-3 text-sm text-slate-500 dark:text-slate-400 leading-relaxed" style="white-space: pre-line">{{ $siteBio }}</p>
+                    @endif
                 </div>
                 {{-- Nav --}}
                 <div>

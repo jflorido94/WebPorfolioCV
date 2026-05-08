@@ -26,13 +26,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer(['layouts.app', 'layouts.admin'], function ($view) {
-            $initials = User::where('is_admin', true)
-                ->first()
-                ?->profile
-                ?->avatar_initials ?? 'JF';
+        View::composer(['layouts.app', 'layouts.admin', 'components.admin-layout'], function ($view) {
+            $profile = User::where('is_admin', true)->first()?->profile;
 
-            $view->with('siteInitials', $initials);
+            $view->with('siteInitials', $profile?->avatar_initials ?? 'JF');
+            $view->with('siteAvatarPath', $profile?->avatar_path ?? '');
+            $view->with('siteBio', $profile?->bio ?? '');
         });
     }
 }

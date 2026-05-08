@@ -60,6 +60,13 @@ echo "Warming up application caches..."
 php artisan config:cache
 php artisan route:cache
 
+
+# 7. Clear caches to ensure fresh state
+php artisan config:clear
+php artisan route:clear
+php artisan cache:clear
+php artisan view:clear
+
 echo "Laravel portfolio initialization complete!"
 echo "Starting PHP-FPM..."
 

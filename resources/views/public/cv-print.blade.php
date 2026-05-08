@@ -21,7 +21,7 @@
     @if($user->profile?->bio)
     <section class="mb-6">
         <h2 class="text-xl font-bold border-b-2 border-purple-600 pb-2 mb-4">Sobre mí</h2>
-        <p>{!! nl2br(e($user->profile->bio)) !!}</p>
+        <p style="white-space: pre-line">{{ $user->profile->bio }}</p>
     </section>
     @endif
 

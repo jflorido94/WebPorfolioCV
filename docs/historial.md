@@ -74,7 +74,7 @@
 ## FASE 8: Vistas Blade
 ### Layouts
 - [x] layouts/app.blade.php (público con nav)
-- [x] layouts/admin.blade.php (admin con sidebar)
+- [x] components/admin-layout.blade.php (admin con sidebar — componente Blade, NO layouts/admin.blade.php)
 
 ### Vistas Públicas
 - [x] public/home.blade.php (hero, stats, últimos posts)
@@ -154,9 +154,9 @@
 ## Archivos Creados/Modificados
 
 ### Estructuras Críticas Verificadas
-- [x] app/Http/Controllers/ (6 controllers)
+- [x] app/Http/Controllers/ (6 controllers — ProfileController eliminado por ser residuo de Breeze)
 - [x] app/Http/Middleware/ (1 middleware)
-- [x] app/Http/Requests/ (4 form requests)
+- [x] app/Http/Requests/ (4 form requests — ProfileUpdateRequest eliminado por ser residuo de Breeze)
 - [x] app/Models/ (7 modelos)
 - [x] app/Services/ (2 servicios)
 - [x] database/migrations/ (10 migraciones)
@@ -295,6 +295,28 @@ php artisan test --filter=PostTest      # ✅ Tests específicos
 - [x] CLAUDE.md (especificaciones técnicas)
 - [x] design.md (guidelines de diseño)
 - [x] PROJECT_CHECKLIST.md (este documento)
+
+---
+
+## Mantenimiento Post-Lanzamiento (mayo 2026)
+
+### Correcciones aplicadas
+- ✅ Bio del footer ahora se carga dinámicamente desde el perfil (antes hardcodeado)
+- ✅ Saltos de línea del bio respetados en todos los sitios (home, CV, footer, cv-print) mediante `white-space: pre-line`
+- ✅ Iniciales del sidebar admin ahora usan `avatar_initials` del perfil en lugar de hardcoded "JF"
+- ✅ Avatar del usuario en sidebar admin muestra foto real si existe, o iniciales del perfil si no
+- ✅ `AppServiceProvider` comparte `$siteInitials`, `$siteAvatarPath` y `$siteBio` con ambos layouts via `View::composer`
+- ✅ Identificado y corregido: el layout admin real es `components/admin-layout.blade.php`, no `layouts/admin.blade.php`
+
+### Limpieza de archivos huérfanos
+Eliminados residuos de Laravel Breeze y scaffolding inicial no utilizados:
+- `resources/views/layouts/admin.blade.php` (duplicado huérfano — el real es el componente)
+- `resources/views/layouts/navigation.blade.php` (residuo Breeze)
+- `resources/views/welcome.blade.php` (scaffolding Laravel)
+- `resources/views/dashboard.blade.php` (scaffolding Laravel)
+- `resources/views/profile/` y sus partials (Breeze sin rutas)
+- `app/Http/Controllers/ProfileController.php` (Breeze sin rutas)
+- `app/Http/Requests/ProfileUpdateRequest.php` (solo usado por ProfileController)
 
 ---
 

@@ -174,7 +174,7 @@
                             <span class="w-8 h-0.5 bg-aurora inline-block"></span>
                             Sobre mi
                         </h2>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">{!! nl2br(e($user->profile->bio)) !!}</p>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed" style="white-space: pre-line">{{ $user->profile->bio }}</p>
                     </div>
                     @endif
 

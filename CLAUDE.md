@@ -393,8 +393,8 @@ RESOURCE /admin/posts           → Admin\PostController           name: admin.p
 ## Vistas Blade
 
 ### Layouts
-- `layouts/app.blade.php` — layout público con nav (Inicio, CV, Blog)
-- `layouts/admin.blade.php` — layout admin con sidebar (Dashboard, Posts, CV)
+- `layouts/app.blade.php` — layout público con nav (Inicio, CV, Blog). Usado via `<x-app-layout>`
+- `components/admin-layout.blade.php` — layout admin con sidebar. Usado via `<x-admin-layout>` (NO existe layouts/admin.blade.php)
 
 ### Vistas públicas
 - `public/home.blade.php` — presentación, stats, últimos posts
@@ -486,6 +486,14 @@ Usa `RefreshDatabase`.
 - Usa barryvdh/laravel-dompdf
 - Método `generateCvPdf(User $user): Response`
 - Inyectado en `Public\CvController@downloadPdf`
+
+### AppServiceProvider — View::composer
+`app/Providers/AppServiceProvider.php` comparte estas variables con `layouts.app` y `components.admin-layout`:
+- `$siteInitials` — `avatar_initials` del perfil admin (cadena vacía si no configurado)
+- `$siteAvatarPath` — `avatar_path` del perfil admin
+- `$siteBio` — `bio` del perfil admin (cadena vacía si no configurado)
+
+Todas las vistas que usen el bio deben renderizarlo con `style="white-space: pre-line"` para respetar saltos de línea.
 
 ---
 
