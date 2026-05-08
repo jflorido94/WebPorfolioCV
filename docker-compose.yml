@@ -1,0 +1,107 @@
+# Uso:
+#   Desarrollo  → docker compose up --build -d
+#   Producción  → docker compose pull && docker compose up -d
+#   phpMyAdmin  → docker compose --profile tools up -d
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${APP_IMAGE:-jflorido94/webportfolio-cv:latest}
+    container_name: portfolio_app
+    user: nginx
+    restart: unless-stopped
+    working_dir: /var/www
+    environment:
+      APP_ENV: ${APP_ENV:-local}
+      APP_DEBUG: ${APP_DEBUG:-true}
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-portfolio}
+      DB_USERNAME: ${DB_USERNAME:-portfolio}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - public_data:/var/www/public
+      - storage_data:/var/www/storage
+    networks:
+      - portfolio
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t 2>/dev/null && echo OK || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    image: ${NGINX_IMAGE:-jflorido94/webportfolio-cv-nginx:latest}
+    container_name: portfolio_nginx
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:80"
+    volumes:
+      - public_data:/var/www/public
+      - storage_data:/var/www/storage
+    depends_on:
+      - app
+    networks:
+      - portfolio
+
+  db:
+    image: mariadb:11
+    container_name: portfolio_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-portfolio}
+      MYSQL_USER: ${DB_USERNAME:-portfolio}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - portfolio
+    healthcheck:
+      test: ["CMD", "mariadb", "-u", "${DB_USERNAME:-portfolio}", "-p${DB_PASSWORD}", "-h", "localhost", "-e", "SELECT 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  phpmyadmin:
+    profiles: [tools]
+    image: phpmyadmin:latest
+    container_name: portfolio_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${DB_USERNAME:-portfolio}
+      PMA_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks:
+      - portfolio
+
+networks:
+  portfolio:
+    driver: bridge
+
+volumes:
+  db_data:
+  public_data:
+  storage_data:
+  cache_data:
