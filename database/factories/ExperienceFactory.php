@@ -25,7 +25,6 @@ class ExperienceFactory extends Factory
             'description' => fake()->paragraph(),
             'started_at' => $start,
             'ended_at' => $end,
-            'sort_order' => fake()->numberBetween(0, 10),
         ];
     }
 }

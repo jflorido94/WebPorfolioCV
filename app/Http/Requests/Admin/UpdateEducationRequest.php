@@ -18,7 +18,6 @@ class UpdateEducationRequest extends FormRequest
             'institution' => 'required|string|max:150',
             'location' => 'nullable|string|max:100',
             'year' => 'nullable|integer|min:1900|max:2099',
-            'sort_order' => 'nullable|integer|min:0',
             'show_in_web' => 'nullable|boolean',
             'show_in_pdf' => 'nullable|boolean',
         ];

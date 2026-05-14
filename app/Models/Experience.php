@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $started_at
  * @property \Illuminate\Support\Carbon|null $ended_at
- * @property int $sort_order
  * @property bool $show_in_web
  * @property bool $show_in_pdf
  * @property-read User $user
@@ -37,7 +36,6 @@ class Experience extends Model
         'description',
         'started_at',
         'ended_at',
-        'sort_order',
         'show_in_web',
         'show_in_pdf',
     ];
@@ -47,7 +45,6 @@ class Experience extends Model
         return [
             'started_at' => 'date',
             'ended_at' => 'date',
-            'sort_order' => 'integer',
             'show_in_web' => 'boolean',
             'show_in_pdf' => 'boolean',
         ];
@@ -65,6 +62,6 @@ class Experience extends Model
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderBy('sort_order');
+        return $query->orderByDesc('started_at')->orderByDesc('ended_at');
     }
 }

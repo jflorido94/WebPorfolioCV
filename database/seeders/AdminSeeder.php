@@ -47,7 +47,6 @@ class AdminSeeder extends Seeder
             'description' => 'Desarrollo y mantenimiento de aplicaciones web con PHP/Laravel. Arquitectura de bases de datos MariaDB. Implementación de APIs REST. Dockerización de proyectos.',
             'started_at' => '2022-01-15',
             'ended_at' => null,
-            'sort_order' => 0,
         ]);
 
         Experience::create([
@@ -58,7 +57,6 @@ class AdminSeeder extends Seeder
             'description' => 'Desarrollo de aplicaciones web con PHP, JavaScript y Angular. Soporte técnico y mantenimiento de sistemas.',
             'started_at' => '2020-06-01',
             'ended_at' => '2022-01-10',
-            'sort_order' => 1,
         ]);
 
         Experience::create([
@@ -69,7 +67,6 @@ class AdminSeeder extends Seeder
             'description' => 'Prácticas en desarrollo web durante el ciclo formativo superior.',
             'started_at' => '2019-09-01',
             'ended_at' => '2020-06-30',
-            'sort_order' => 2,
         ]);
 
         Education::create([
@@ -77,20 +74,19 @@ class AdminSeeder extends Seeder
             'title' => 'Técnico Superior en Desarrollo de Aplicaciones Web',
             'institution' => 'IES San Sebastián',
             'year' => 2022,
-            'sort_order' => 0,
         ]);
 
         $skills = [
-            ['name' => 'PHP', 'category' => 'Backend', 'sort_order' => 0],
-            ['name' => 'Laravel', 'category' => 'Framework', 'sort_order' => 1],
-            ['name' => 'Docker', 'category' => 'DevOps', 'sort_order' => 2],
-            ['name' => 'JavaScript', 'category' => 'Frontend', 'sort_order' => 3],
-            ['name' => 'TypeScript', 'category' => 'Frontend', 'sort_order' => 4],
-            ['name' => 'Angular', 'category' => 'Framework', 'sort_order' => 5],
-            ['name' => 'C#', 'category' => 'Lenguaje', 'sort_order' => 6],
-            ['name' => 'MariaDB', 'category' => 'Base de Datos', 'sort_order' => 7],
-            ['name' => 'Tailwind CSS', 'category' => 'Frontend', 'sort_order' => 8],
-            ['name' => 'Git', 'category' => 'Herramientas', 'sort_order' => 9],
+            ['name' => 'PHP',          'category' => 'Backend'],
+            ['name' => 'Laravel',      'category' => 'Framework'],
+            ['name' => 'Docker',       'category' => 'DevOps'],
+            ['name' => 'JavaScript',   'category' => 'Frontend'],
+            ['name' => 'TypeScript',   'category' => 'Frontend'],
+            ['name' => 'Angular',      'category' => 'Framework'],
+            ['name' => 'C#',           'category' => 'Lenguaje'],
+            ['name' => 'MariaDB',      'category' => 'Base de Datos'],
+            ['name' => 'Tailwind CSS', 'category' => 'Frontend'],
+            ['name' => 'Git',          'category' => 'Herramientas'],
         ];
 
         foreach ($skills as $skill) {

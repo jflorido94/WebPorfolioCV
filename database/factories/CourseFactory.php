@@ -22,7 +22,6 @@ class CourseFactory extends Factory
             'location' => null,
             'year' => fake()->year(),
             'url' => null,
-            'sort_order' => fake()->numberBetween(0, 10),
         ];
     }
 }

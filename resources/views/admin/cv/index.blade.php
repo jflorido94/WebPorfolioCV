@@ -156,10 +156,6 @@
                             <label class="input-label">Periodo *</label>
                             <input type="text" name="period" class="input-field" placeholder="2022 - actual" required>
                         </div>
-                        <div>
-                            <label class="input-label">Orden</label>
-                            <input type="number" name="sort_order" class="input-field" placeholder="0" min="0">
-                        </div>
                     </div>
                     <div>
                         <label class="input-label">Descripcion</label>
@@ -264,10 +260,6 @@
                                 <label class="input-label">Periodo *</label>
                                 <input type="text" name="period" value="{{ $exp->period }}" class="input-field" required>
                             </div>
-                            <div>
-                                <label class="input-label">Orden</label>
-                                <input type="number" name="sort_order" value="{{ $exp->sort_order }}" class="input-field" min="0">
-                            </div>
                         </div>
                         <div>
                             <label class="input-label">Descripcion</label>
@@ -341,10 +333,6 @@
                             <div>
                                 <label class="input-label">Año</label>
                                 <input type="number" name="year" class="input-field" placeholder="2016" min="1900" max="2099">
-                            </div>
-                            <div>
-                                <label class="input-label">Orden</label>
-                                <input type="number" name="sort_order" class="input-field" placeholder="0" min="0">
                             </div>
                         </div>
                         <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
@@ -423,10 +411,6 @@
                                     <label class="input-label">Año</label>
                                     <input type="number" name="year" value="{{ $edu->year }}" class="input-field" min="1900" max="2099">
                                 </div>
-                                <div>
-                                    <label class="input-label">Orden</label>
-                                    <input type="number" name="sort_order" value="{{ $edu->sort_order }}" class="input-field" min="0">
-                                </div>
                             </div>
                             <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
                                 <label class="flex items-center gap-2 text-sm cursor-pointer">
@@ -491,10 +475,6 @@
                             <div>
                                 <label class="input-label">Año</label>
                                 <input type="number" name="year" class="input-field" placeholder="2024" min="1900" max="2099">
-                            </div>
-                            <div>
-                                <label class="input-label">Orden</label>
-                                <input type="number" name="sort_order" class="input-field" placeholder="0" min="0">
                             </div>
                         </div>
                         <div>
@@ -575,10 +555,6 @@
                                     <label class="input-label">Año</label>
                                     <input type="number" name="year" value="{{ $course->year }}" class="input-field" min="1900" max="2099">
                                 </div>
-                                <div>
-                                    <label class="input-label">Orden</label>
-                                    <input type="number" name="sort_order" value="{{ $course->sort_order }}" class="input-field" min="0">
-                                </div>
                             </div>
                             <div>
                                 <label class="input-label">Enlace al curso (opcional)</label>
@@ -642,10 +618,6 @@
                             <div>
                                 <label class="input-label">Año</label>
                                 <input type="number" name="year" class="input-field" placeholder="2024" min="1900" max="2099">
-                            </div>
-                            <div>
-                                <label class="input-label">Orden</label>
-                                <input type="number" name="sort_order" class="input-field" placeholder="0" min="0">
                             </div>
                         </div>
                         <div>
@@ -726,10 +698,6 @@
                                     <label class="input-label">Año</label>
                                     <input type="number" name="year" value="{{ $cert->year }}" class="input-field" min="1900" max="2099">
                                 </div>
-                                <div>
-                                    <label class="input-label">Orden</label>
-                                    <input type="number" name="sort_order" value="{{ $cert->sort_order }}" class="input-field" min="0">
-                                </div>
                             </div>
                             <div>
                                 <label class="input-label">URL del certificado (opcional)</label>
@@ -784,10 +752,6 @@
                         <div class="sm:col-span-2">
                             <label class="input-label">Nombre *</label>
                             <input type="text" name="name" class="input-field" placeholder="Laravel" required maxlength="60">
-                        </div>
-                        <div>
-                            <label class="input-label">Orden</label>
-                            <input type="number" name="sort_order" class="input-field" placeholder="0" min="0">
                         </div>
                         <div class="sm:col-span-2">
                             <label class="input-label">Categoria *</label>
@@ -857,9 +821,6 @@
                                     </div>
                                     <div class="sm:col-span-1">
                                         <input type="text" name="category" value="{{ $skill->category }}" class="input-field text-sm" required maxlength="40" placeholder="Categoria">
-                                    </div>
-                                    <div>
-                                        <input type="number" name="sort_order" value="{{ $skill->sort_order }}" class="input-field text-sm" min="0" placeholder="Orden">
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mb-3">

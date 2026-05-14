@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $user_id
  * @property string $name
  * @property string $category
- * @property int $sort_order
  * @property bool $show_in_web
  * @property bool $show_in_pdf
  * @property-read User $user
@@ -25,7 +24,6 @@ class Skill extends Model
         'user_id',
         'name',
         'category',
-        'sort_order',
         'show_in_web',
         'show_in_pdf',
     ];
@@ -33,7 +31,6 @@ class Skill extends Model
     protected function casts(): array
     {
         return [
-            'sort_order' => 'integer',
             'show_in_web' => 'boolean',
             'show_in_pdf' => 'boolean',
         ];
@@ -46,6 +43,6 @@ class Skill extends Model
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderBy('sort_order');
+        return $query->orderByDesc('created_at');
     }
 }

@@ -21,7 +21,6 @@ class SkillFactory extends Factory
                 'React', 'Docker', 'Tailwind CSS', 'Git', 'PostgreSQL',
             ]),
             'category' => fake()->randomElement(['Backend', 'Frontend', 'DevOps', 'Database', 'general']),
-            'sort_order' => fake()->numberBetween(0, 10),
         ];
     }
 }

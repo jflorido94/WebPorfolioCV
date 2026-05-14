@@ -64,7 +64,6 @@ class AdminCvTest extends TestCase
             'company' => 'Acme Inc',
             'period' => '2020 - 2022',
             'description' => 'Desarrollo backend',
-            'sort_order' => 0,
         ]);
 
         $response->assertRedirect(route('admin.cv.index'));

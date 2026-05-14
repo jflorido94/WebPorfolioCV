@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $location
  * @property int|null $year
  * @property string|null $url
- * @property int $sort_order
  * @property bool $show_in_web
  * @property bool $show_in_pdf
  * @property-read User $user
@@ -33,7 +32,6 @@ class Course extends Model
         'location',
         'year',
         'url',
-        'sort_order',
         'show_in_web',
         'show_in_pdf',
     ];
@@ -42,7 +40,6 @@ class Course extends Model
     {
         return [
             'year' => 'integer',
-            'sort_order' => 'integer',
             'show_in_web' => 'boolean',
             'show_in_pdf' => 'boolean',
         ];
@@ -55,7 +52,7 @@ class Course extends Model
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderBy('sort_order');
+        return $query->orderByDesc('year');
     }
 
     public function scopeCourses(Builder $query): Builder

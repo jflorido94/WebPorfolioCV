@@ -20,7 +20,6 @@ class StoreExperienceRequest extends FormRequest
             'period' => 'required|string|max:60',
             'description' => 'nullable|string',
             'competencies' => 'nullable|string',
-            'sort_order' => 'nullable|integer|min:0',
             'show_in_web' => 'nullable|boolean',
             'show_in_pdf' => 'nullable|boolean',
         ];

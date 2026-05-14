@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $institution
  * @property string|null $location
  * @property int|null $year
- * @property int $sort_order
  * @property bool $show_in_web
  * @property bool $show_in_pdf
  * @property-read User $user
@@ -29,7 +28,6 @@ class Education extends Model
         'institution',
         'location',
         'year',
-        'sort_order',
         'show_in_web',
         'show_in_pdf',
     ];
@@ -38,7 +36,6 @@ class Education extends Model
     {
         return [
             'year' => 'integer',
-            'sort_order' => 'integer',
             'show_in_web' => 'boolean',
             'show_in_pdf' => 'boolean',
         ];
@@ -51,6 +48,6 @@ class Education extends Model
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderBy('sort_order');
+        return $query->orderByDesc('year');
     }
 }

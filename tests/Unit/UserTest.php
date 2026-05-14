@@ -54,12 +54,10 @@ class UserTest extends TestCase
         Experience::factory()->create([
             'user_id' => $user->id,
             'started_at' => now()->subYears(7)->startOfYear(),
-            'sort_order' => 1,
         ]);
         Experience::factory()->create([
             'user_id' => $user->id,
             'started_at' => now()->subYears(2)->startOfYear(),
-            'sort_order' => 0,
         ]);
 
         $user->load('experiences');

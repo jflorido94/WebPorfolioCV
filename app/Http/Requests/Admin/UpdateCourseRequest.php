@@ -20,7 +20,6 @@ class UpdateCourseRequest extends FormRequest
             'location' => 'nullable|string|max:100',
             'year' => 'nullable|integer|min:1900|max:2099',
             'url' => 'nullable|url|max:500',
-            'sort_order' => 'nullable|integer|min:0',
             'show_in_web' => 'nullable|boolean',
             'show_in_pdf' => 'nullable|boolean',
         ];

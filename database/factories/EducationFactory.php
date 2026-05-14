@@ -24,7 +24,6 @@ class EducationFactory extends Factory
             ]),
             'institution' => fake()->company(),
             'year' => fake()->numberBetween(2010, 2025),
-            'sort_order' => fake()->numberBetween(0, 10),
         ];
     }
 }
