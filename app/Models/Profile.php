@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
  * @property string|null $linkedin_url
  * @property string|null $avatar_initials
  * @property string|null $avatar_path
+ * @property string|null $phone
  * @property-read string $initials
  * @property-read User $user
  */
@@ -30,6 +31,8 @@ class Profile extends Model
         'title',
         'bio',
         'contact_email',
+        'phone',
+        'languages',
         'location',
         'github_url',
         'linkedin_url',

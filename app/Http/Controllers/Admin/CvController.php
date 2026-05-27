@@ -16,6 +16,7 @@ use App\Http\Requests\Admin\UpdateSkillRequest;
 use App\Models\Course;
 use App\Models\Education;
 use App\Models\Experience;
+use App\Models\Language;
 use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -31,7 +32,7 @@ class CvController extends Controller
     public function index(): View
     {
         $user = User::query()
-            ->with(['profile', 'experiences.competencies', 'education', 'skills', 'courses'])
+            ->with(['profile', 'experiences.competencies', 'education', 'skills', 'courses', 'languages'])
             ->whereKey(Auth::id())
             ->firstOrFail();
 
@@ -61,6 +62,37 @@ class CvController extends Controller
         );
 
         return redirect()->route('admin.cv.index')->with('success', 'Perfil actualizado exitosamente');
+    }
+
+    // ── IDIOMAS ──────────────────────────────────────────────────────────────
+
+    public function updateLanguages(\Illuminate\Http\Request $request): RedirectResponse
+    {
+        $request->validate([
+            'languages'         => 'nullable|array',
+            'languages.*.name'  => 'required_with:languages|string|max:60',
+            'languages.*.level' => 'required_with:languages|string|max:60',
+        ]);
+
+        $user = Auth::user();
+
+        DB::transaction(function () use ($user, $request): void {
+            $user->languages()->delete();
+
+            foreach ($request->input('languages', []) as $lang) {
+                if (empty(trim($lang['name'] ?? ''))) {
+                    continue;
+                }
+                $user->languages()->create([
+                    'name'        => $lang['name'],
+                    'level'       => $lang['level'] ?? '',
+                    'show_in_web' => true,
+                    'show_in_pdf' => true,
+                ]);
+            }
+        });
+
+        return redirect()->route('admin.cv.index')->with('success', 'Idiomas actualizados exitosamente');
     }
 
     // ── EXPERIENCIA ──────────────────────────────────────────────────────────

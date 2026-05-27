@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Education;
 use App\Models\Experience;
+use App\Models\Language;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Models\Skill;
@@ -15,93 +16,144 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        // Use firstOrCreate to make seeder idempotent (safe to run multiple times)
-        $admin = User::firstOrCreate(
+        $admin = User::updateOrCreate(
             ['email' => 'admin@portfolio.local'],
             [
-                'name' => 'Javier Florido',
+                'name' => 'Javier Florido Pavon',
                 'password' => Hash::make('password'),
                 'is_admin' => true,
                 'email_verified_at' => now(),
             ]
         );
 
-        // Only create profile if it doesn't exist
-        Profile::firstOrCreate(
+        Profile::updateOrCreate(
             ['user_id' => $admin->id],
             [
                 'title' => 'Técnico Superior en Desarrollo de Aplicaciones Web',
-                'bio' => 'Programador especializado en PHP/Laravel y desarrollo web fullstack. Apasionado por crear soluciones robustas y escalables usando tecnologías modernas.',
-                'location' => 'Madrid, Spain',
+                'bio' => "Desarrollador web con más de 3 años de experiencia profesional en PHP y Laravel. Especializado en el desarrollo de aplicaciones web robustas con MariaDB, Docker y arquitecturas orientadas a servicios. Apasionado por las buenas prácticas, el código limpio y la mejora continua.",
+                'contact_email' => 'jflorido94@hotmail.com',
+                'phone' => '+34 635 751 965',
+                'location' => 'Torres de la Alameda, Madrid',
                 'github_url' => 'https://github.com/jflorido94',
                 'linkedin_url' => 'https://linkedin.com/in/jflorido94',
-                'avatar_initials' => 'JF',
+                'avatar_initials' => 'JFP',
             ]
         );
 
-        Experience::create([
-            'user_id' => $admin->id,
-            'role' => 'Programador Senior',
-            'company' => 'Unex Group / BM S.L',
-            'period' => '2022 - Actual',
-            'description' => 'Desarrollo y mantenimiento de aplicaciones web con PHP/Laravel. Arquitectura de bases de datos MariaDB. Implementación de APIs REST. Dockerización de proyectos.',
-            'started_at' => '2022-01-15',
-            'ended_at' => null,
-        ]);
-
-        Experience::create([
-            'user_id' => $admin->id,
-            'role' => 'Desarrollador Junior',
-            'company' => 'Minas de Riotinto',
-            'period' => '2020 - 2022',
-            'description' => 'Desarrollo de aplicaciones web con PHP, JavaScript y Angular. Soporte técnico y mantenimiento de sistemas.',
-            'started_at' => '2020-06-01',
-            'ended_at' => '2022-01-10',
-        ]);
-
-        Experience::create([
-            'user_id' => $admin->id,
-            'role' => 'Prácticas Profesionales',
-            'company' => 'Paterna del Campo',
-            'period' => '2019 - 2020',
-            'description' => 'Prácticas en desarrollo web durante el ciclo formativo superior.',
-            'started_at' => '2019-09-01',
-            'ended_at' => '2020-06-30',
-        ]);
-
-        Education::create([
-            'user_id' => $admin->id,
-            'title' => 'Técnico Superior en Desarrollo de Aplicaciones Web',
-            'institution' => 'IES San Sebastián',
-            'year' => 2022,
-        ]);
-
-        $skills = [
-            ['name' => 'PHP',          'category' => 'Backend'],
-            ['name' => 'Laravel',      'category' => 'Framework'],
-            ['name' => 'Docker',       'category' => 'DevOps'],
-            ['name' => 'JavaScript',   'category' => 'Frontend'],
-            ['name' => 'TypeScript',   'category' => 'Frontend'],
-            ['name' => 'Angular',      'category' => 'Framework'],
-            ['name' => 'C#',           'category' => 'Lenguaje'],
-            ['name' => 'MariaDB',      'category' => 'Base de Datos'],
-            ['name' => 'Tailwind CSS', 'category' => 'Frontend'],
-            ['name' => 'Git',          'category' => 'Herramientas'],
-        ];
-
-        foreach ($skills as $skill) {
-            Skill::create([
+        if ($admin->experiences()->doesntExist()) {
+            Experience::create([
                 'user_id' => $admin->id,
-                ...$skill,
+                'role' => 'Programador Web',
+                'company' => 'Unex Group / BM S.L',
+                'period' => '2022 - Actual',
+                'location' => 'Huelva',
+                'description' => "Desarrollo y mantenimiento de aplicaciones web internas con PHP y Laravel.\nDiseño e implementación de bases de datos relacionales con MariaDB.\nDespliegue y gestión de entornos Docker en producción.\nDesarrollo de APIs REST e integraciones con sistemas externos.",
+                'started_at' => '2022-01-15',
+                'ended_at' => null,
+                'show_in_web' => true,
+                'show_in_pdf' => true,
+            ]);
+
+            Experience::create([
+                'user_id' => $admin->id,
+                'role' => 'Técnico informático',
+                'company' => 'WifiBlaster',
+                'period' => 'Ago 2015 - Sep 2015',
+                'location' => 'Huelva',
+                'description' => 'Instalación y configuración de equipos y redes WiFi para clientes residenciales y empresas.',
+                'started_at' => '2015-08-10',
+                'ended_at' => '2015-09-18',
+                'show_in_web' => true,
+                'show_in_pdf' => true,
+            ]);
+
+            Experience::create([
+                'user_id' => $admin->id,
+                'role' => 'Técnico informático',
+                'company' => 'PC Blaster',
+                'period' => '2012 - 2015',
+                'location' => 'Huelva',
+                'description' => 'Reparación y mantenimiento de equipos informáticos. Instalación de sistemas operativos, software y periféricos.',
+                'started_at' => '2014-12-15',
+                'ended_at' => '2015-04-30',
+                'show_in_web' => true,
+                'show_in_pdf' => true,
+            ]);
+
+            Experience::create([
+                'user_id' => $admin->id,
+                'role' => 'Técnico en Prácticas',
+                'company' => 'Tecinet',
+                'period' => '2022',
+                'location' => 'Huelva',
+                'description' => 'Prácticas de empresa del ciclo formativo de Grado Superior en Desarrollo de Aplicaciones Web.',
+                'started_at' => '2022-03-01',
+                'ended_at' => '2022-06-30',
+                'show_in_web' => true,
+                'show_in_pdf' => true,
             ]);
         }
 
-        Post::create([
-            'user_id' => $admin->id,
-            'title' => 'Construyendo un Portfolio con Laravel 11 y Docker',
-            'slug' => 'portfolio-laravel-docker',
-            'summary' => 'En este artículo te muestro cómo construir un portfolio profesional fullstack usando Laravel 11, PHP 8.3, MariaDB y Docker.',
-            'content' => '# Construyendo un Portfolio con Laravel 11 y Docker
+        if ($admin->education()->doesntExist()) {
+            Education::create([
+                'user_id' => $admin->id,
+                'title' => 'Técnico Superior en Desarrollo de Aplicaciones Web',
+                'institution' => 'IES San Sebastián',
+                'location' => 'Huelva',
+                'year' => 2022,
+                'show_in_web' => true,
+                'show_in_pdf' => true,
+            ]);
+
+            Education::create([
+                'user_id' => $admin->id,
+                'title' => 'Bachillerato',
+                'institution' => 'IES La Palma',
+                'location' => 'La Palma del Condado, Huelva',
+                'year' => 2017,
+                'show_in_web' => true,
+                'show_in_pdf' => true,
+            ]);
+        }
+
+        if ($admin->skills()->doesntExist()) {
+            $skills = [
+                ['name' => 'PHP',          'category' => 'Backend'],
+                ['name' => 'Laravel',      'category' => 'Backend'],
+                ['name' => 'MySQL / MariaDB', 'category' => 'Base de datos'],
+                ['name' => 'Docker',       'category' => 'DevOps'],
+                ['name' => 'Git',          'category' => 'DevOps'],
+                ['name' => 'JavaScript',   'category' => 'Frontend'],
+                ['name' => 'TypeScript',   'category' => 'Frontend'],
+                ['name' => 'Angular',      'category' => 'Frontend'],
+                ['name' => 'Tailwind CSS', 'category' => 'Frontend'],
+                ['name' => 'C#',           'category' => 'Lenguajes'],
+                ['name' => 'HTML / CSS',   'category' => 'Frontend'],
+                ['name' => 'Nginx',        'category' => 'DevOps'],
+            ];
+
+            foreach ($skills as $skill) {
+                Skill::create([
+                    'user_id' => $admin->id,
+                    'show_in_web' => true,
+                    'show_in_pdf' => true,
+                    ...$skill,
+                ]);
+            }
+        }
+
+        if ($admin->languages()->doesntExist()) {
+            Language::create(['user_id' => $admin->id, 'name' => 'Español', 'level' => 'Nativo',         'show_in_web' => true, 'show_in_pdf' => true]);
+            Language::create(['user_id' => $admin->id, 'name' => 'Inglés',  'level' => 'Nivel técnico', 'show_in_web' => true, 'show_in_pdf' => true]);
+        }
+
+        if ($admin->posts()->doesntExist()) {
+            Post::create([
+                'user_id' => $admin->id,
+                'title' => 'Construyendo un Portfolio con Laravel 11 y Docker',
+                'slug' => 'portfolio-laravel-docker',
+                'summary' => 'En este artículo te muestro cómo construir un portfolio profesional fullstack usando Laravel 11, PHP 8.3, MariaDB y Docker.',
+                'content' => '# Construyendo un Portfolio con Laravel 11 y Docker
 
 En el mundo del desarrollo web, tener un portfolio profesional es esencial. En este artículo, te mostraré cómo construir un portfolio completo usando **Laravel 11**, **PHP 8.3**, **MariaDB** y **Docker**.
 
@@ -111,15 +163,6 @@ En el mundo del desarrollo web, tener un portfolio profesional es esencial. En e
 - **Base de Datos**: MariaDB 11
 - **Frontend**: Blade + Tailwind CSS
 - **Contenedores**: Docker + Docker Compose
-- **Herramientas**: Vite para assets
-
-## Estructura de la Aplicación
-
-La aplicación consta de tres partes principales:
-
-1. **Sección Pública** - Página de inicio, CV interactivo y blog
-2. **Panel de Administración** - Gestión de contenido privada
-3. **API** - Endpoints para futuras integraciones
 
 ## Configuración de Docker
 
@@ -132,103 +175,11 @@ COPY . /var/www
 WORKDIR /var/www
 ```
 
-## Conclusión
-
 Laravel 11 es un excelente framework para construir aplicaciones web profesionales. Con Docker, garantizamos reproducibilidad y facilidad de despliegue.',
-            'category' => 'tutorial',
-            'published' => true,
-            'published_at' => now()->subDays(15),
-        ]);
-
-        Post::create([
-            'user_id' => $admin->id,
-            'title' => 'Guía Completa de Eloquent ORM en Laravel',
-            'slug' => 'eloquent-orm-laravel',
-            'summary' => 'Una guía profunda sobre Eloquent ORM, el sistema de mapeo relacional de objetos de Laravel.',
-            'content' => '# Guía Completa de Eloquent ORM en Laravel
-
-Eloquent es el ORM (Object Relational Mapping) incluido con Laravel y es uno de los más elegantes en el ecosistema PHP.
-
-## Relaciones en Eloquent
-
-### Relación HasMany
-
-```php
-class User extends Model
-{
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
-}
-```
-
-### Relación BelongsTo
-
-```php
-class Post extends Model
-{
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-}
-```
-
-## Scopes
-
-Los scopes te permiten reutilizar lógica de consultas en tu aplicación.
-
-```php
-class Post extends Model
-{
-    public function scopePublished(Builder $query): Builder
-    {
-        return $query->where("published", true);
-    }
-}
-
-// Uso
-Post::published()->get();
-```
-
-Eloquent simplifica enormemente el trabajo con bases de datos en Laravel.',
-            'category' => 'blog',
-            'published' => true,
-            'published_at' => now()->subDays(8),
-        ]);
-
-        Post::create([
-            'user_id' => $admin->id,
-            'title' => 'Mi Nuevo Proyecto: Sistema de Gestión de Tareas',
-            'slug' => 'proyecto-sistema-tareas',
-            'summary' => 'Presentación de un nuevo proyecto personal: un sistema completo de gestión de tareas con Laravel y Angular.',
-            'content' => '# Mi Nuevo Proyecto: Sistema de Gestión de Tareas
-
-Acabo de terminar un nuevo proyecto que combina **Laravel** en el backend con **Angular** en el frontend.
-
-## Características
-
-- Crear, editar y eliminar tareas
-- Asignación de tareas a otros usuarios
-- Sistema de notificaciones en tiempo real
-- Dashboard con estadísticas
-- Autenticación JWT
-
-## Tecnologías Usadas
-
-| Tecnología | Uso |
-|---|---|
-| Laravel 11 | Backend |
-| Angular 17 | Frontend |
-| PostgreSQL | Base de datos |
-| Docker | Contenedorización |
-| WebSockets | Notificaciones en tiempo real |
-
-Este proyecto me permitió explorar nuevas tecnologías y mejorar mis habilidades en arquitectura de sistemas.',
-            'category' => 'proyecto',
-            'published' => false,
-            'published_at' => null,
-        ]);
+                'category' => 'tutorial',
+                'published' => true,
+                'published_at' => now()->subDays(15),
+            ]);
+        }
     }
 }

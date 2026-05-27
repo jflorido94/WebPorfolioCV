@@ -40,10 +40,17 @@
                         @error('bio') <p class="text-brand-coral text-xs mt-1.5">{{ $message }}</p> @enderror
                     </div>
 
-                    <div>
-                        <label class="input-label" for="contact_email">Email de contacto publico</label>
-                        <input type="email" id="contact_email" name="contact_email" value="{{ old('contact_email', $user->profile?->contact_email) }}" class="input-field" placeholder="tu@email.com">
-                        @error('contact_email') <p class="text-brand-coral text-xs mt-1.5">{{ $message }}</p> @enderror
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="input-label" for="contact_email">Email de contacto publico</label>
+                            <input type="email" id="contact_email" name="contact_email" value="{{ old('contact_email', $user->profile?->contact_email) }}" class="input-field" placeholder="tu@email.com">
+                            @error('contact_email') <p class="text-brand-coral text-xs mt-1.5">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="input-label" for="phone">Telefono de contacto</label>
+                            <input type="text" id="phone" name="phone" value="{{ old('phone', $user->profile?->phone) }}" class="input-field" placeholder="+34 600 000 000">
+                            @error('phone') <p class="text-brand-coral text-xs mt-1.5">{{ $message }}</p> @enderror
+                        </div>
                     </div>
 
                     <div>
@@ -729,6 +736,43 @@
                     No hay certificaciones registradas
                 </div>
                 @endforelse
+            </div>
+
+            <hr class="border-border dark:border-white/10">
+
+            {{-- Idiomas --}}
+            <div class="space-y-4">
+                <h3 class="font-heading font-bold text-base">Idiomas</h3>
+                <form action="{{ route('admin.cv.languages.update') }}" method="POST"
+                      x-data="{
+                          langs: @js(old('languages', $user->languages->map(fn($l) => ['name' => $l->name, 'level' => $l->level])->whenEmpty(fn($c) => collect([['name'=>'','level'=>'']]))->values()->all())),
+                          add() { this.langs.push({ name: '', level: '' }); },
+                          remove(i) { if (this.langs.length > 1) this.langs.splice(i, 1); }
+                      }"
+                      class="card-glass rounded-2xl p-5 space-y-4">
+                    @csrf
+                    @method('PUT')
+                    <template x-for="(lang, i) in langs" :key="i">
+                        <div class="flex gap-3 items-center">
+                            <input type="text" :name="`languages[${i}][name]`" x-model="lang.name"
+                                   class="input-field flex-1" placeholder="Espanol">
+                            <input type="text" :name="`languages[${i}][level]`" x-model="lang.level"
+                                   class="input-field flex-1" placeholder="Nativo">
+                            <button type="button" @click="remove(i)"
+                                    class="p-2 rounded-xl text-slate-400 hover:text-brand-coral hover:bg-brand-coral/10 transition-all shrink-0 cursor-pointer"
+                                    x-show="langs.length > 1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </template>
+                    @error('languages') <p class="text-brand-coral text-xs">{{ $message }}</p> @enderror
+                    <div class="flex justify-between items-center">
+                        <button type="button" @click="add()" class="text-xs text-brand-purple font-semibold hover:underline">+ Anadir idioma</button>
+                        <button type="submit" class="btn-primary text-sm py-2 px-4">Guardar idiomas</button>
+                    </div>
+                </form>
             </div>
 
         </div>

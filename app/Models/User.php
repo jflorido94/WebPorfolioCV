@@ -24,6 +24,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Education> $education
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Skill> $skills
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Course> $courses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Language> $languages
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Post> $posts
  * @property-read int $years_of_experience
  */
@@ -37,7 +38,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    public const CV_RELATIONS = ['profile', 'experiences.competencies', 'education', 'skills', 'courses'];
+    public const CV_RELATIONS = ['profile', 'experiences.competencies', 'education', 'skills', 'courses', 'languages'];
 
     /** @var list<string> */
     protected $fillable = [
@@ -86,6 +87,11 @@ class User extends Authenticatable
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class)->ordered();
+    }
+
+    public function languages(): HasMany
+    {
+        return $this->hasMany(Language::class)->orderBy('id');
     }
 
     public function posts(): HasMany

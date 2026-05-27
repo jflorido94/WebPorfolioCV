@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // CV
         Route::get('/admin/cv', [AdminCvController::class, 'index'])->name('admin.cv.index');
         Route::put('/admin/cv/profile', [AdminCvController::class, 'updateProfile'])->name('admin.cv.profile.update');
+        Route::put('/admin/cv/languages', [AdminCvController::class, 'updateLanguages'])->name('admin.cv.languages.update');
 
         // Experiencia
         Route::post('/admin/cv/experience', [AdminCvController::class, 'storeExperience'])->name('admin.cv.experience.store');
