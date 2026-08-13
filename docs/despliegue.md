@@ -60,20 +60,28 @@ docker compose up --build -d
 
 ### Paso 1: construir y subir imágenes
 
+Además de `latest`, cada build de producción se etiqueta con la siguiente versión semver menor (`0.1`, `0.2`, ... el número siguiente al último tag existente en Docker Hub). Comprueba el último tag antes de etiquetar:
+
+```bash
+curl -s "https://hub.docker.com/v2/repositories/jflorido94/webportfolio-cv/tags?page_size=25" | grep -o '"name":"[^"]*"'
+```
+
 Desde tu máquina local:
 
 ```bash
-# Construye las imágenes
+# Construye las imágenes (docker-compose.yml ya las nombra jflorido94/webportfolio-cv[-nginx]:latest)
 docker compose build
 
-# Etiqueta para Docker Hub
-docker tag webporfoliocv-app:latest jflorido94/webportfolio-cv:latest
-docker tag webporfoliocv-nginx:latest jflorido94/webportfolio-cv-nginx:latest
+# Etiqueta la versión siguiente (ajusta X.Y al número que corresponda)
+docker tag jflorido94/webportfolio-cv:latest jflorido94/webportfolio-cv:X.Y
+docker tag jflorido94/webportfolio-cv-nginx:latest jflorido94/webportfolio-cv-nginx:X.Y
 
-# Sube
+# Sube ambos tags
 docker login
 docker push jflorido94/webportfolio-cv:latest
+docker push jflorido94/webportfolio-cv:X.Y
 docker push jflorido94/webportfolio-cv-nginx:latest
+docker push jflorido94/webportfolio-cv-nginx:X.Y
 ```
 
 ### Paso 2: desplegar en el servidor
