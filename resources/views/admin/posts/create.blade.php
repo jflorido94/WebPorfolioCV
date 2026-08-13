@@ -20,7 +20,8 @@
                   renderPreview() {
                       this.preview = window.marked ? marked.parse(this.content) : this.content;
                   }
-              }">
+              }"
+              @submit="loading = true">
             @csrf
             <div class="space-y-6">
 
@@ -82,7 +83,7 @@
                     </label>
                     <div class="flex gap-3">
                         <a href="{{ route('admin.posts.index') }}" class="btn-secondary text-sm py-2.5 px-5">Cancelar</a>
-                        <button type="submit" class="btn-primary text-sm py-2.5 px-5" :disabled="loading" @click="loading=true">
+                        <button type="submit" class="btn-primary text-sm py-2.5 px-5" :disabled="loading">
                             <svg x-show="loading" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
