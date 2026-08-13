@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/admin/cv/skill/{skill}', [AdminCvController::class, 'destroySkill'])->name('admin.cv.skill.destroy');
 
         // Posts
+        Route::post('/admin/posts/upload-image', [PostController::class, 'uploadImage'])->name('admin.posts.upload-image');
         Route::resource('admin/posts', PostController::class, ['as' => 'admin']);
 
         // Metricas

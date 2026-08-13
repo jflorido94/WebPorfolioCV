@@ -12,15 +12,7 @@
         </div>
 
         <form action="{{ route('admin.posts.update', $post) }}" method="POST"
-              x-data="{
-                  content: @js(old('content', $post->content)),
-                  preview: '',
-                  showPreview: false,
-                  loading: false,
-                  renderPreview() {
-                      this.preview = window.marked ? marked.parse(this.content) : this.content;
-                  }
-              }"
+              x-data="postEditor(@js(old('content', $post->content)))"
               @submit="loading = true">
             @csrf
             @method('PUT')
@@ -53,15 +45,27 @@
                 <div class="card-glass rounded-2xl overflow-hidden">
                     <div class="flex items-center justify-between px-6 py-3 border-b border-light-border dark:border-dark-border">
                         <label class="input-label mb-0">Contenido (Markdown) *</label>
-                        <button type="button" @click="showPreview = !showPreview; if(showPreview) renderPreview()"
-                                class="text-xs font-semibold text-brand-purple hover:text-brand-pink transition-colors cursor-pointer"
-                                x-text="showPreview ? 'Editar' : 'Preview'">
-                        </button>
+                        <div class="flex items-center gap-4">
+                            <input type="file" accept="image/*" class="hidden" x-ref="imageInput" @change="onImageInputChange($event)">
+                            <button type="button" @click="openImagePicker()" :disabled="uploadingImage"
+                                    class="text-xs font-semibold text-brand-purple hover:text-brand-pink transition-colors cursor-pointer disabled:opacity-50"
+                                    x-text="uploadingImage ? 'Subiendo...' : 'Insertar imagen'">
+                            </button>
+                            <button type="button" @click="showPreview = !showPreview; if(showPreview) renderPreview()"
+                                    class="text-xs font-semibold text-brand-purple hover:text-brand-pink transition-colors cursor-pointer"
+                                    x-text="showPreview ? 'Editar' : 'Preview'">
+                            </button>
+                        </div>
                     </div>
                     <div x-show="!showPreview" class="p-6">
                         <textarea name="content" rows="16" required
+                                  x-ref="contentInput"
                                   class="input-field font-mono text-sm resize-y"
-                                  x-model="content">{{ old('content', $post->content) }}</textarea>
+                                  x-model="content"
+                                  @dragover.prevent
+                                  @drop.prevent="onDrop($event)"
+                                  @paste="onPaste($event)">{{ old('content', $post->content) }}</textarea>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1.5">Puedes arrastrar una imagen, pegarla desde el portapapeles o usar "Insertar imagen".</p>
                         @error('content') <p class="text-brand-coral text-xs mt-1.5">{{ $message }}</p> @enderror
                     </div>
                     <div x-show="showPreview" class="p-6 prose-portfolio min-h-48" x-html="preview"></div>

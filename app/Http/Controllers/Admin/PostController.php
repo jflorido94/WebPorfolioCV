@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Concerns\AuthorizesOwnership;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StorePostImageRequest;
 use App\Http\Requests\Admin\StorePostRequest;
 use App\Http\Requests\Admin\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -64,6 +67,13 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('success', 'Post eliminado exitosamente');
+    }
+
+    public function uploadImage(StorePostImageRequest $request): JsonResponse
+    {
+        $path = $request->file('image')->store('posts', 'public');
+
+        return response()->json(['url' => Storage::url($path)]);
     }
 
     /**
