@@ -62,6 +62,8 @@ class Experience extends Model
 
     public function scopeOrdered(Builder $query): Builder
     {
-        return $query->orderByDesc('started_at')->orderByDesc('ended_at');
+        return $query
+            ->orderByRaw('CASE WHEN ended_at IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderByDesc('ended_at');
     }
 }
