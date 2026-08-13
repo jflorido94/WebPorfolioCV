@@ -311,6 +311,7 @@ app/Http/Controllers/
 - `edit(Post)` → verificar ownership con `abort_unless`
 - `update(UpdatePostRequest, Post)` → usar `DB::transaction()`. Sincronizar tags.
 - `destroy(Post)` → verificar ownership con `abort_unless`
+- `uploadImage(StorePostImageRequest)` → guarda la imagen en disco `public` (carpeta `posts/`), devuelve JSON `{url}`. Usado por el editor de contenido para insertar `![alt](url)` en el Markdown (sin cambiar el tipo de almacenamiento de `content`, que sigue siendo Markdown raw)
 - Método privado `syncTags(Post, string): void` → delete + recrear tags
 - Método privado `authorizePost(Post): void` → `abort_unless($post->user_id === Auth::id(), 403)`
 
@@ -336,6 +337,9 @@ Todos en `app/Http/Requests/Admin/`. Todos con `authorize(): bool { return auth(
 
 ### UpdatePostRequest
 - Mismas reglas que Store
+
+### StorePostImageRequest
+- `image`: required, file, image, max:4096 (KB)
 
 ### UpdateProfileRequest
 - `title`: required, string, max:255
@@ -385,6 +389,7 @@ GET  /admin/cv                  → Admin\CvController@index       name: admin.c
 PUT  /admin/cv/profile          → Admin\CvController@updateProfile   name: admin.cv.profile.update
 POST /admin/cv/experience       → Admin\CvController@storeExperience name: admin.cv.experience.store
 DEL  /admin/cv/experience/{id}  → Admin\CvController@destroyExperience name: admin.cv.experience.destroy
+POST /admin/posts/upload-image  → Admin\PostController@uploadImage name: admin.posts.upload-image
 RESOURCE /admin/posts           → Admin\PostController           name: admin.posts.*
 ```
 
@@ -405,7 +410,7 @@ RESOURCE /admin/posts           → Admin\PostController           name: admin.p
 
 ### Vistas admin
 - `admin/posts/index.blade.php` — tabla de posts con acciones
-- `admin/posts/create.blade.php` — formulario con editor Markdown y preview en tiempo real (Alpine.js + marked.js vía CDN)
+- `admin/posts/create.blade.php` — formulario con editor Markdown y preview en tiempo real (Alpine.js + marked.js vía CDN). Usa el componente `Alpine.data('postEditor', ...)` (`resources/js/app.js`), compartido con edit, que añade subida de imágenes (botón, drag&drop, pegar) insertando `![alt](url)` en el cursor
 - `admin/posts/edit.blade.php` — igual que create pero pre-relleno
 - `admin/cv/index.blade.php` — formularios de perfil, experiencia, educación y habilidades en una sola página
 
