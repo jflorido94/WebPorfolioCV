@@ -147,6 +147,7 @@ Variables opcionales para sobreescribir imágenes Docker Hub:
 
 **Stage 2** — `php:8.3-fpm-alpine`
 - Extensiones PHP requeridas: `pdo`, `pdo_mysql`, `mbstring`, `exif`, `pcntl`, `bcmath`, `gd`, `xml`
+- `gd` se configura con `docker-php-ext-configure gd --with-jpeg --with-freetype` antes de instalarla; sin eso solo soporta PNG y falla con JPEG (avatares, `AvatarUploadTest`)
 - Instalar Node.js + npm para compilar assets con Vite
 - Copiar vendor del stage 1
 - Ejecutar `npm ci && npm run build`
@@ -173,6 +174,8 @@ max_execution_time = 60
 ## Base de datos — Migraciones
 
 Crear en este orden. Todas deben incluir método `down()` correcto.
+
+**Regla: las migraciones solo tocan esquema, nunca datos.** Nada de `insert`/`update` con datos del CV ni ids fijos: rompe cualquier base de datos vacía (tests, instalaciones nuevas). Los datos van en seeders. `MigrationsAreSchemaOnlyTest` lo vigila. `2026_05_24_000002_fix_cv_data` se vació por este motivo (ya estaba aplicada en producción; sus datos están en `AdminSeeder`).
 
 ### tabla: users *(ajustar la existente)*
 - Añadir columna: `is_admin` boolean, default false
@@ -433,6 +436,9 @@ RESOURCE /admin/posts           → Admin\PostController           name: admin.p
 
 ### DatabaseSeeder
 Llama únicamente a `AdminSeeder`.
+
+### TestCvSeeder
+CV completo con datos ficticios (solo factories/Faker) para los tests: `$this->seed(TestCvSeeder::class)`. Expone `USER_NAME` y `PROFILE_TITLE` para las aserciones. **Los tests nunca usan `AdminSeeder` ni datos personales reales.**
 
 ### AdminSeeder
 Crea un usuario administrador:
