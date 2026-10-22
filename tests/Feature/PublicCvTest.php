@@ -2,11 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Education;
-use App\Models\Experience;
-use App\Models\Profile;
-use App\Models\Skill;
-use App\Models\User;
+use Database\Seeders\TestCvSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,26 +10,20 @@ class PublicCvTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function seedFullCv(): User
+    private function seedFullCv(): void
     {
-        $user = User::factory()->admin()->create(['name' => 'CV User']);
-        Profile::factory()->create(['user_id' => $user->id, 'title' => 'CV Title']);
-        Experience::factory()->count(2)->create(['user_id' => $user->id]);
-        Education::factory()->create(['user_id' => $user->id]);
-        Skill::factory()->count(3)->create(['user_id' => $user->id]);
-
-        return $user;
+        $this->seed(TestCvSeeder::class);
     }
 
     public function test_cv_show_renders_with_user_data(): void
     {
-        $user = $this->seedFullCv();
+        $this->seedFullCv();
 
         $response = $this->get(route('cv.show'));
 
         $response->assertStatus(200);
-        $response->assertSee('CV User');
-        $response->assertSee('CV Title');
+        $response->assertSee(TestCvSeeder::USER_NAME);
+        $response->assertSee(TestCvSeeder::PROFILE_TITLE);
     }
 
     public function test_cv_print_renders(): void
