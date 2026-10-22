@@ -26,6 +26,7 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     freetype-dev \
     libxml2-dev \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype \
     && docker-php-ext-install \
     pdo \
     pdo_mysql \
